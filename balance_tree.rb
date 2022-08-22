@@ -1,6 +1,7 @@
 class Tree
   attr_accessor :root
-  
+
+
   def initialize(array)
     p array.sort.uniq
     @root = build_tree(array.sort.uniq)
@@ -37,6 +38,15 @@ class Tree
     end
   end
 
+  def delete(value)
+
+  end
+
+  def find(value, node = @root)
+    return node if value == node.data
+
+    
+  end
 end
 
 class Node
