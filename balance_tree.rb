@@ -40,10 +40,27 @@ class Tree
   end
 
   def delete(value, node = @root)
-    found_node, parent_node = find
+
+    if value < node.data
+      node.left = delete(value, node.left)
+    elsif value > node.data
+      node.right = delete(value, node.right)
+    else
+      if node.left.nil?
+        temp = node.right
+        return temp
+      else node.right.nil?
+        temp = node.left
+        return temp
+      end
+
+      #TODO case with 2 children
+    end
+
+    return node
   end
 
-  def find(value, node = @root, )
+  def find(value, node = @root)
     return node if value == node.data
 
     if value < node.data
@@ -52,9 +69,23 @@ class Tree
       found_node = find(value,node.right)
     end
 
-    return found_node, node
+    return found_node
+  end
+
+  def find_parent(value, node = @root, parent = -1)
+    return parent if value == node.data
+  
+      if value < node.data
+        parent_node = find_parent(value,node.left, node)
+      else
+        parent_node = find_parent(value,node.right, node)
+      end
+  
+      return parent_node
   end
 end
+
+
 
 class Node
   attr_accessor :data, :left, :right
@@ -67,5 +98,6 @@ class Node
 end
 
 a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-a.find(4)
+p a.pretty_print
+a.delete(7)
 p a.pretty_print
