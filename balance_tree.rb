@@ -28,6 +28,7 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 
+  # TODO: Fix case where value already exists
   def insert(value,node=@root)
     if value < node.data
       insert(value,node.left) unless node.left.nil?
@@ -38,14 +39,20 @@ class Tree
     end
   end
 
-  def delete(value)
-
+  def delete(value, node = @root)
+    found_node, parent_node = find
   end
 
-  def find(value, node = @root)
+  def find(value, node = @root, )
     return node if value == node.data
 
-    
+    if value < node.data
+      found_node = find(value,node.left)
+    else
+      found_node = find(value,node.right)
+    end
+
+    return found_node, node
   end
 end
 
@@ -60,5 +67,5 @@ class Node
 end
 
 a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-a.insert(4)
+a.find(4)
 p a.pretty_print
