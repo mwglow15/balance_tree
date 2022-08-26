@@ -1,7 +1,6 @@
 class Tree
   attr_accessor :root
 
-
   def initialize(array)
     p array.sort.uniq
     @root = build_tree(array.sort.uniq)
@@ -49,15 +48,28 @@ class Tree
       if node.left.nil?
         temp = node.right
         return temp
-      else node.right.nil?
+      elsif node.right.nil?
         temp = node.left
         return temp
       end
 
-      #TODO case with 2 children
+      temp = find_min(node.right)
+
+      node.data = temp.data
+
+      node.right = delete(temp.data, node.right)
+      
     end
 
     return node
+  end
+
+  def find_min(node)
+    return node if node.left.nil?
+
+    min = find_min(node.left)
+
+    return min
   end
 
   def find(value, node = @root)
@@ -99,5 +111,5 @@ end
 
 a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 p a.pretty_print
-a.delete(7)
+a.delete(8)
 p a.pretty_print
