@@ -64,6 +64,18 @@ class Tree
     return node
   end
 
+  def level_order(node = @root, queue = [], print_arr = [])
+    
+    print_arr.push(node.data) unless node.data.nil?
+    
+    queue.push(node.left) unless node.left.nil?
+    queue.push(node.right) unless node.right.nil?
+
+    print_arr.push(level_order(queue.shift, queue, print_arr)) unless queue[0].nil?
+
+    return print_arr
+  end
+
   def find_min(node)
     return node if node.left.nil?
 
@@ -110,6 +122,5 @@ class Node
 end
 
 a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-p a.pretty_print
-a.delete(8)
-p a.pretty_print
+puts a.pretty_print
+p a.level_order
