@@ -58,20 +58,24 @@ class Tree
       node.data = temp.data
 
       node.right = delete(temp.data, node.right)
-      
+
     end
 
     return node
   end
 
-  def level_order(node = @root, queue = [], print_arr = [])
-    
-    print_arr.push(node.data) unless node.data.nil?
-    
+  def level_order(node = @root, queue = [], print_arr = [], &block)
+    if block_given?
+      print_arr.push(yield node.data) unless node.data.nil?
+    else
+      print_arr.push(node.data) unless node.data.nil?
+    end
+
     queue.push(node.left) unless node.left.nil?
     queue.push(node.right) unless node.right.nil?
 
-    print_arr.push(level_order(queue.shift, queue, print_arr)) unless queue[0].nil?
+
+    level_order(queue.shift, queue, print_arr, &block) unless queue.empty?
 
     return print_arr
   end
