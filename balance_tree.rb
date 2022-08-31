@@ -160,7 +160,19 @@ class Tree
     end
 
     return [height_left, height_right].max
+  end
 
+  def depth(node, root = @root)
+    depth = 0
+    if node.data < root.data
+      depth = 1
+      depth += depth(node, root.left) unless root.left.nil?
+    elsif node.data > root.data
+      depth = 1
+      depth += depth(node, root.right) unless root.right.nil?
+    end
+
+    return depth
   end
 end
 
@@ -176,5 +188,5 @@ end
 
 a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 puts a.pretty_print
-b = a.find(5)
-p a.height(b)
+b = a.find(9)
+p a.depth(b)
