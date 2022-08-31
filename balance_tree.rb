@@ -146,6 +146,22 @@ class Tree
 
     return parent_node
   end
+
+  def height(node)
+    height_left, height_right = 0,0
+    if node.left
+      height_left = 1
+      height_left += height(node.left)
+    end
+
+    if node.right
+      height_right = 1
+      height_right += height(node.right)
+    end
+
+    return [height_left, height_right].max
+
+  end
 end
 
 class Node
@@ -160,4 +176,5 @@ end
 
 a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 puts a.pretty_print
-p a.inorder
+b = a.find(5)
+p a.height(b)
