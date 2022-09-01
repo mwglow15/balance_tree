@@ -174,6 +174,20 @@ class Tree
 
     return depth
   end
+
+  def balanced?(root = @root)
+    if node.data
+      height_left = 1
+      height_left += height(node.left)
+    end
+
+    if node.right
+      height_right = 1
+      height_right += height(node.right)
+    end
+
+
+  end
 end
 
 class Node
