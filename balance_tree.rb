@@ -175,18 +175,22 @@ class Tree
     return depth
   end
 
-  def balanced?(root = @root)
-    if node.data
-      height_left = 1
-      height_left += height(node.left)
+  def balanced?(root = @root, prev_node_two_leaf = true)
+    balanced_left = true
+    balanced_right = true
+    if root.right && root.left
+      balanced_left = balanced?(root.left, true)
+      balanced_right = balanced?(root.right, true)
+    elsif root.right.nil? || root.left.nil?
+      balanced_left = balanced?(root.left, false) unless root.left.nil?
+      balanced_right = balanced?(root.right, false) unless root.right.nil?
     end
 
-    if node.right
-      height_right = 1
-      height_right += height(node.right)
+    if !prev_node_two_leaf && (root.right || root.left)
+      return false
     end
-
-
+    
+    return balanced_left || balanced_right
   end
 end
 
@@ -202,5 +206,7 @@ end
 
 a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 puts a.pretty_print
-b = a.find(9)
-p a.depth(b)
+a.insert(1)
+a.insert(2)
+p a.pretty_print
+p a.balanced?
