@@ -198,6 +198,12 @@ class Tree
   def balanced?
     balanced_height != -1
   end
+
+  def rebalance
+    arr = level_order
+
+    @root = build_tree(arr)
+  end
 end
 
 
@@ -212,12 +218,19 @@ class Node
   end
 end
 
-a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-puts a.pretty_print
-a.insert(2)
-a.insert(1)
-p a.pretty_print
+a = Tree.new(Array.new(15) { rand(1..100)})
+a.pretty_print
 p a.balanced?
-# puts b
-# b = a.find(67)
-# p a.height(b)
+p a.level_order
+p a.preorder
+p a.postorder
+p a.inorder
+a.insert(150)
+a.insert(105)
+a.insert(175)
+a.insert(120)
+a.pretty_print
+p a.balanced?
+a.rebalance
+a.pretty_print
+p a.balanced?
