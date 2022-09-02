@@ -149,6 +149,10 @@ class Tree
 
   def height(node)
     height_left, height_right = 0,0
+
+    return 0 if node.nil?
+    return 0 if node.left.nil? && node.right.nil?
+
     if node.left
       height_left = 1
       height_left += height(node.left)
@@ -175,24 +179,28 @@ class Tree
     return depth
   end
 
-  def balanced?(root = @root, prev_node_two_leaf = true)
-    balanced_left = true
-    balanced_right = true
-    if root.right && root.left
-      balanced_left = balanced?(root.left, true)
-      balanced_right = balanced?(root.right, true)
-    elsif root.right.nil? || root.left.nil?
-      balanced_left = balanced?(root.left, false) unless root.left.nil?
-      balanced_right = balanced?(root.right, false) unless root.right.nil?
-    end
+  def balanced_height(root = @root)
+    return 0 if root.nil?
 
-    if !prev_node_two_leaf && (root.right || root.left)
-      return false
-    end
-    
-    return balanced_left || balanced_right
+    left_tree_height = balanced_height(root.left)
+    #puts "node: #{root.data} - left height: #{left_tree_height}"
+    return -1 if left_tree_height == -1
+
+    right_tree_height = balanced_height(root.right)
+    #puts "node: #{root.data} - right height: #{right_tree_height}"
+    return -1 if right_tree_height == -1
+
+    return -1 if (left_tree_height - right_tree_height).abs > 1
+
+    return ([left_tree_height, right_tree_height].max + 1)
+  end
+
+  def balanced?
+    balanced_height != -1
   end
 end
+
+
 
 class Node
   attr_accessor :data, :left, :right
@@ -206,7 +214,10 @@ end
 
 a = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 puts a.pretty_print
-a.insert(1)
 a.insert(2)
+a.insert(1)
 p a.pretty_print
 p a.balanced?
+# puts b
+# b = a.find(67)
+# p a.height(b)
